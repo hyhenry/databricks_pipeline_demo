@@ -1,4 +1,4 @@
-# A sample job for petrinex.
+# Create job for petrinex.
 
 resources:
   jobs:
@@ -18,8 +18,6 @@ resources:
       parameters:
         - name: env
           default: ${var.env}
-        - name: source_catalog
-          default: ${var.source_catalog}
 
       tasks:
 

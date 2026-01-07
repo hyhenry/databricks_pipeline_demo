@@ -25,14 +25,17 @@ files_all = {
 
 # COMMAND ----------
 
+dbutils.widgets.text("env","development") #set default environment to dev
+
 is_dev = dbutils.widgets.get("env") == "development"
 catalog = "bronze"
 schema = "petrinex"
 
 if is_dev:
     catalog = f"{catalog}_dev"
-
-print(catalog)
+    print(f"running in dev environment, saving data to {catalog}.{schema}")
+else:
+    print(f"running in prd environment, saving data to {catalog}.{schema}")
 
 volume = "csv_files"
 volume_path = f"/Volumes/{catalog}/{schema}/{volume}"
