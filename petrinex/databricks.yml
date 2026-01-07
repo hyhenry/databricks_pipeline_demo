@@ -11,9 +11,11 @@ include:
 # Variable declarations. These variables are assigned in the dev/prod targets below.
 variables:
   catalog:
-    description: The catalog to use
+    description: The catalog to write to
+  source_catalog:
+    description: The catalog to reference from
   schema:
-    description: The schema to use
+    description: The schema to reference
   env:
     description: Environment name (dev/prod)
 
@@ -29,7 +31,8 @@ targets:
     workspace:
       host: https://dbc-00c1f96f-10e2.cloud.databricks.com
     variables:
-      catalog: bronze_dev
+      catalog: silver_dev
+      source_catalog: bronze_dev
       schema: petrinex
       env: development
 
@@ -40,7 +43,8 @@ targets:
       # We explicitly deploy to /Workspace/Users/hfhy01@gmail.com to make sure we only have a single copy.
       root_path: /Workspace/Users/hfhy01@gmail.com/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog: bronze
+      catalog: silver
+      source_catalog: bronze
       schema: petrinex
       env: production
     permissions:

@@ -2,8 +2,8 @@
 
 resources:
   jobs:
-    sample_job:
-      name: sample_job
+    petrinex_injestion:
+      name: daily_petrinex_job
 
       trigger:
         # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
@@ -16,20 +16,28 @@ resources:
       #    - your_email@example.com
 
       parameters:
-        - name: catalog
-          default: ${var.catalog}
-        - name: schema
-          default: ${var.schema}
         - name: env
           default: ${var.env}
+        - name: source_catalog
+          default: ${var.source_catalog}
 
       tasks:
-        - task_key: refresh_pipeline
+
+        - task_key: petrinex_bronze_load
+          notebook_task:
+            notebook_path: ../src/bronze/petrinex_ingest_data.py
+          # new_cluster:
+          #   spark_version: 15.4.x-scala2.12
+          #   node_type_id: i3.xlarge
+          #   num_workers: 2
+
+        - task_key: petrinex_silver_load
+          depends_on:
+            - task_key: petrinex_bronze_load
           pipeline_task:
             pipeline_id: ${resources.pipelines.petrinex_etl.id}
-          
 
       environments:
         - environment_key: default
           spec:
-            environment_version: "2"
+            environment_version: "4"

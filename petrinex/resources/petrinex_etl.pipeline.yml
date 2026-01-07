@@ -3,16 +3,19 @@
 resources:
   pipelines:
     petrinex_etl:
-      name: petrinex_etl
+      name: petrinex_pipeline
       catalog: ${var.catalog}
       schema: ${var.schema}
-      environment: ${var.env}
       serverless: true
-      root_path: "../src/petrinex_etl"
+      configuration:
+        source_catalog: ${var.source_catalog}
+      root_path: "../src/silver"
+
+
 
       libraries:
         - glob:
-            include: ../src/petrinex_etl/transformations/**
+            include: ../src/silver/**
 
       # environment:
       #   dependencies:
