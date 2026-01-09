@@ -1,9 +1,9 @@
-# Create job for petrinex.
+# A sample job for linear.
 
 resources:
   jobs:
-    petrinex_injestion:
-      name: daily_petrinex_job
+    linear_ingestion:
+      name: daily_linear_job
 
       trigger:
         # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
@@ -14,26 +14,26 @@ resources:
       email_notifications:
        on_failure:
          - your_email@example.com
-
+      
       parameters:
         - name: env
           default: ${var.env}
 
       tasks:
 
-        - task_key: petrinex_bronze_load
+        - task_key: linear_bronze_load
           notebook_task:
-            notebook_path: ../src/bronze/petrinex_ingest_data.py
+            notebook_path: ../src/bronze/linear_raw_load.py
           # new_cluster:
           #   spark_version: 15.4.x-scala2.12
           #   node_type_id: i3.xlarge
           #   num_workers: 2
 
-        - task_key: petrinex_silver_load
+        - task_key: linear_silver_load
           depends_on:
-            - task_key: petrinex_bronze_load
+            - task_key: linear_bronze_load
           pipeline_task:
-            pipeline_id: ${resources.pipelines.petrinex_etl.id}
+            pipeline_id: ${resources.pipelines.linear_etl.id}
 
       environments:
         - environment_key: default

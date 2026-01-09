@@ -1,9 +1,9 @@
-# The main pipeline for petrinex
+# The main pipeline for linear
 
 resources:
   pipelines:
-    petrinex_etl:
-      name: petrinex_pipeline
+    linear_etl:
+      name: linear_pipeline
       catalog: ${var.catalog}
       schema: ${var.schema}
       serverless: true
